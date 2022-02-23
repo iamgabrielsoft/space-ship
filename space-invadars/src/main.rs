@@ -3,6 +3,16 @@
 use macroquad::{prelude::*, audio::{load_sound_from_bytes}};
 
 
+mod game_logic; 
+mod player; 
+mod enermy;
+mod bullet; 
+
+
+use player::*; 
+use enermy::*;
+use bullet::*;
+
 fn window_conf() -> Conf {
     Conf {
         window_resizable: false, 
@@ -14,29 +24,15 @@ fn window_conf() -> Conf {
 
 
 
-pub struct Player {
-    pub x: f32, 
-    pub y: f32, 
-    pub w: f32, 
-    pub speed: f32, 
-    pub color: Color, 
-    pub gameover: bool
-}
 
-
-
-impl Player {
-    pub fn draw(&mut self, texture: Texture2D) {
-        draw_texture(texture, self.x, self.y, self.color)
-    }
-}
 
 
 #[macroquad::main(window_conf())]
 async fn main() {
     // show_mouse(false); 
-    let mut score:i32 = 0; 
-
+    let mut score: i32 = 0;
+    let mut enermy_vec: Vec<Enermy> = vec![];
+    let mut bullet_vec: Vec<Bullet> = vec![]; 
     let mut player:Player = Player {
         x: Conf::default().window_width as f32 /2.0 - 6.0, 
         y: Conf::default().window_height as f32 / 2.0 -6.0, 
@@ -52,7 +48,7 @@ async fn main() {
     let texture_enermy = Texture2D::from_file_with_format(include_bytes!("../assets/enemy.png"), None);
 
     // let audio_explosion = load_sound_from_bytes(include_bytes!("../assets/explosion.wav")).await.unwrap(); 
-
+    let mut enermy_count: i32 = 1;  
     loop {
         if player.gameover {
             clear_background(BLACK); 
@@ -61,7 +57,7 @@ async fn main() {
             
         }else {
             //continue game here
-            draw_text("GAME STARTED", Conf::default().window_width as f32 - 600.0, Conf::default().window_height as f32 / 2.0 + 25.0, 100.0, GREEN);
+            game_logic::logic(&mut player, &mut enermy_vec, &mut enermy_count, &mut score,  &texture_bg, texture_player, &texture_enermy); 
         }
 
         next_frame().await
