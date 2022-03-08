@@ -144,6 +144,4 @@ pub fn logic(
     bullet_vec.retain(|x| x.y > 0.0); 
     enermy_vec.retain(|x| x.y < Conf::default().window_height as f32); 
     enermy_vec.retain(|x| !x.is_erased)
-
-
 }

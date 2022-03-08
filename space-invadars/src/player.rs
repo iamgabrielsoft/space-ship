@@ -16,11 +16,11 @@ pub struct Player {
 
 impl Player {
     pub fn left(&mut self) {
-        self.x  -= self.speed
+        self.x -= self.speed
     }
 
     pub fn right(&mut self) {
-        self.y += self.speed
+        self.x += self.speed
     }
 
     pub fn draw(&mut self, texture: Texture2D) {
